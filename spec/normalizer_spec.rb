@@ -2,7 +2,7 @@ require_relative "../lib/normalizer.rb"
 require "json"
 
 describe "Normalizer" do
-  it "returns normalized json" do
+  it "returns removes pairs whose key occurs at higher levels" do
     json = {
       "wholesaler" => "US Foods",
       "delivered" => "2015-06-19T05:15:00-0500",
