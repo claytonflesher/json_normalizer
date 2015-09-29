@@ -5,11 +5,9 @@ class Normalizer
     @json       = normalize(data: JSON.parse(data))
   end
 
-  attr_reader :json, :exclusions
-  private :exclusions
+  attr_reader :json
 
   private
-
   def normalize(data:, exclusions: [])
     data.delete_if { |key, value| exclusions.include?(key) }
     data.each do |key, value|
