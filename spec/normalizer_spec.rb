@@ -3,7 +3,7 @@ require "json"
 
 describe "Normalizer" do
   it "returns normalized json" do
-    @json = {
+    json = {
       "wholesaler" => "US Foods",
       "delivered" => "2015-06-19T05:15:00-0500",
       "contacts" => [
@@ -17,9 +17,9 @@ describe "Normalizer" do
         }
       ]
     }.to_json
-    @normalizer = Normalizer.new(data: @json)
+    normalizer = Normalizer.new(data: json)
 
-    expect(@normalizer.json).to eq(
+    expect(normalizer.json).to eq(
       {
         "wholesaler" => "US Foods", 
         "delivered"  => "2015-06-19T05:15:00-0500",
@@ -36,7 +36,7 @@ describe "Normalizer" do
   end
 
   it "accounts for key names that aren't in the top layer" do
-    @json = {
+    json = {
       "wholesaler" => "US Foods",
       "delivered" => "2015-06-19T05:15:00-0500",
       "contacts" => [
@@ -49,9 +49,9 @@ describe "Normalizer" do
         }
       ]
     }.to_json
-    @normalizer = Normalizer.new(data: @json)
+    normalizer = Normalizer.new(data: json)
 
-    expect(@normalizer.json).to eq(
+    expect(normalizer.json).to eq(
       {
         "wholesaler" => "US Foods",
         "delivered"  => "2015-06-19T05:15:00-0500",
