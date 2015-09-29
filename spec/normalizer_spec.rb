@@ -2,10 +2,10 @@ require_relative "../lib/normalizer.rb"
 require "json"
 
 describe "Normalizer" do
-  before(:each) do
+  it "returns normalized json" do
     @json = {
       "wholesaler" => "US Foods",
-      "delivered" =>"2015-06-19T05:15:00-0500",
+      "delivered" => "2015-06-19T05:15:00-0500",
       "contacts" => [
         {
           "wholesaler" => "US Foods",
@@ -18,9 +18,7 @@ describe "Normalizer" do
       ]
     }.to_json
     @normalizer = Normalizer.new(data: @json)
-  end
 
-  it "returns normalized json" do
     expect(@normalizer.json).to eq(
       {
         "wholesaler" => "US Foods", 
@@ -31,6 +29,35 @@ describe "Normalizer" do
           },
           {
             "name" => "Bill Delaney"
+          }
+        ]
+      }.to_json
+    )
+  end
+
+  it "accounts for key names that aren't in the top layer" do
+    @json = {
+      "wholesaler" => "US Foods",
+      "delivered" => "2015-06-19T05:15:00-0500",
+      "contacts" => [
+        {
+          "name" => [
+            {
+              "name" => "Something"
+            }
+          ]
+        }
+      ]
+    }.to_json
+    @normalizer = Normalizer.new(data: @json)
+
+    expect(@normalizer.json).to eq(
+      {
+        "wholesaler" => "US Foods",
+        "delivered"  => "2015-06-19T05:15:00-0500",
+        "contacts"   => [
+          {
+            "name" => []
           }
         ]
       }.to_json

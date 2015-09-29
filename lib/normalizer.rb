@@ -3,7 +3,7 @@ require "json"
 class Normalizer
   def initialize(data: )
     @parsed     = JSON.parse(data)
-    @exclusions = @parsed.keys
+    @exclusions = []
     @json       = normalize(data: @parsed)
   end
 
@@ -14,9 +14,9 @@ class Normalizer
 
   def normalize(data:)
     data = remove_targets(data)
-    add_exclusions(data)
     data.each do |key, value|
       if value.class == Array
+        add_exclusions(data)
         value.map { |element| normalize(data: element) }
         value.delete({})
       end
@@ -26,7 +26,7 @@ class Normalizer
 
   def remove_targets(data)
     data.delete_if do |key, value|
-      exclusions.select { |element| element == key }.count > 1
+      exclusions.include?(key)
     end
   end
 
