@@ -2,8 +2,7 @@ require "json"
 
 class Normalizer
   def initialize(data: )
-    @parsed     = JSON.parse(data)
-    @json       = normalize(data: @parsed)
+    @json       = normalize(data: JSON.parse(data))
   end
 
   attr_reader :json, :exclusions
@@ -21,5 +20,4 @@ class Normalizer
     end
     data.to_json
   end
-
 end
