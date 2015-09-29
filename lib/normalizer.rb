@@ -13,10 +13,8 @@ class Normalizer
   private
 
   def normalize(data:)
-    data.delete_if do |key, value|
-      exclusions.select { |element| element == key }.count > 1
-    end
-    data.each_key { |key| exclusions << key }
+    data = remove_targets(data)
+    add_exclusions(data)
     data.each do |key, value|
       if value.class == Array
         value.map { |element| normalize(data: element) }
@@ -24,5 +22,15 @@ class Normalizer
       end
     end
     data.to_json
+  end
+
+  def remove_targets(data)
+    data.delete_if do |key, value|
+      exclusions.select { |element| element == key }.count > 1
+    end
+  end
+
+  def add_exclusions(data)
+    data.each_key { |key| exclusions << key }
   end
 end
